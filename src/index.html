@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="Crimson Music is a modern web music app that lets you stream music online.">
+    <meta name="keywords" content="music app musicapp crimson music crimsonmusic music streaming">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="shortcut icon" href="images/CrimsonLogo.png" type="image/x-icon">
+    <script src="js/index.js" defer></script>
+    <script src="js/indexController.js" type="module"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+    <!-- Microsoft Clarity -->
+    <!-- <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "i4fum0bgpc");
+    </script> -->
+    <script src="https://kit.fontawesome.com/1d408b5acd.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <title>Crimson Music</title>
+</head>
+<body>
+    <div class="bodyHolder">
+
+    <main class="homeScreen">
+        <h2 class="catTitle">Home</h2>
+        <section class="vaultSection">
+            <div class="vibeVaultItem">
+                <video src="videos/TheVaultBg.mp4" autoplay muted loop playsinline></video>
+                <h2 class="vaultH2">VAULT</h2>
+                <button id="openTheVaultBtn"><i class="fa-solid fa-play"></i><div class="blob"></div></button>
+                <ul class="vaultEmotions vaultItemOff">
+                    <li class="emotionItem" onclick="clickEffect(this)">
+                        <h3>Party</h3>
+                    </li>
+                    <li class="emotionItem" onclick="clickEffect(this)">
+                        <h3>Focus</h3>
+                    </li>
+                    <li class="emotionItem" onclick="clickEffect(this)">
+                        <h3>Melancholy</h3>
+                    </li>
+                    <li class="emotionItem" onclick="clickEffect(this)">
+                        <h3>Chill</h3>
+                    </li>
+                    <li class="emotionItem" onclick="clickEffect(this)">
+                        <h3>Motivation</h3>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="recSongsSection">
+            <h2 class="catTitle">Handpicked pieces to enjoy</h2>
+            <h5 class="catDesc">These songs refresh each time you visit the app, or you can just refresh. Up to you!</h5>
+            <ul class="recSongs" id="recSongs" name="Home"></ul>
+        </section>
+
+        <section class="recArtistsSection">
+            <h2 class="catTitle">Artists worth checking out
+                <span>
+                    <button onclick="scrollLeftIn('recArtists')"><i class="fa-solid fa-angle-left"></i></button>
+                    <button onclick="scrollRightIn('recArtists')"><i class="fa-solid fa-angle-right"></i></button>
+                </span>
+            </h2>
+            <ul class="recArtists"></ul>
+        </section>
+
+        <section class="recPlaylistsSection">
+            <h2 class="catTitle">Playlists curated just for <span class="highlightSpan">YOU</span>
+                <span>
+                    <button onclick="scrollLeftIn('recPlaylists')"><i class="fa-solid fa-angle-left"></i></button>
+                    <button onclick="scrollRightIn('recPlaylists')"><i class="fa-solid fa-angle-right"></i></button>
+                </span>
+            </h2>
+            <ul class="recPlaylists"></ul>
+        </section>
+
+        <section class="thisMFSection"></section>
+
+        <section class="bugSection">
+            <button onclick="openBugReport()">SEE A BUG?<span>REPORT IT!</span><i class="fa-solid fa-bug"></i></button>
+        </section>
+
+    </main>
+
+    <main class="searchScreen">
+        <div class="searchBar" id="searchScreenBar">
+            <form onsubmit="event.preventDefault()">
+                <input type="search" name="search" id="searchInput" placeholder="Search away...">
+                <input onclick="clickEffect(this)" style="font-family: FontAwesome" id="submitSearch" type="submit" value="&#xf002;">
+            </form>
+            <div class="SearchTypeChips">
+                <div class="searchChip">
+                    <input type="radio" name="allChip" id="allInput" class="allchipCh" checked onchange="checkTheChip('All')">
+                    <label for="allInput">All</label>
+                </div>
+                <div class="searchChip">
+                    <input type="radio" name="allChip" id="songsInput" onchange="checkTheChip('song')">
+                    <label for="songsInput">Songs</label>
+                </div>
+                <div class="searchChip">
+                    <input type="radio" name="allChip" id="artistsInput" onchange="checkTheChip('artist')">
+                    <label for="artistsInput">Artists</label>
+                </div>
+                <div class="searchChip">
+                    <input type="radio" name="allChip" id="playlistsInput" onchange="checkTheChip('playlist')">
+                    <label for="playlistsInput">Playlists</label>
+                </div>
+                <div class="searchChip">
+                    <input type="radio" name="allChip" id="profilesInput" onchange="checkTheChip('profile')">
+                    <label for="profilesInput">Profiles</label>
+                </div>
+            </div>
+        </div>
+        <ul class="searchList" name="Search"></ul>
+        <h1 class="catTitle">Categories</h1>
+        <ul class="categories"></ul>
+    </main>
+
+    <main class="yoursScreen">
+        <h1>Library
+            <div>
+                <button class="searchOnYoursBtn" onclick="showSearchBarYours(this)"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+        </h1>
+        <div id="searchBarYours" class="searchBar">
+            <form onsubmit="event.preventDefault()">
+                <input type="search" name="search" id="searchYoursInput" placeholder="Search your playlists and artists...">
+                <input onclick="clickEffect(this)" style="font-family: FontAwesome" id="submitYoursSearch" type="submit" value="&#xf002;">
+            </form>
+        </div>
+        <div class="songItem favoritesItem" onclick="openLikedSongs()">
+            <div class="songInfo">
+                <img loading="lazy" src="images/favorites.jpg" alt="playlistBanner">
+                <div class="songText">
+                    <h2>FAVORITES</h2>
+                    <h3>SIMPLY YOURS</h3>
+                </div>
+            </div>
+        </div>
+        <h1 class="yourPlaylistsH1">Your Playlists
+            <div>
+                <button onclick="MakeAPlaylist()"><i class="fa-solid fa-plus"></i></button>
+            </div>
+        </h1>
+        <ul class="yourPlaylists"></ul>
+        <h1 class="yourLPlaylistsH1">Liked Playlists</h1>
+        <ul class="yourLPlaylists"></ul>
+        <h1 class="yourFArtistsH1">Followed Artists</h1>
+        <ul class="yourFArtists"></ul>
+    </main>
+
+    <div class="player">
+        <div class="miniPlayer colorfulMiniPlayer">
+            <div class="playerSongInfo">
+                <img loading="lazy" src="images/CrimsonLogo.png" alt="songBanner" name="songBanner">
+                <div class="playerSongText">
+                    <h2 name="songTitle">Play a song to get started</h2>
+                    <h3 name="songArtist">Go!</h3>
+                </div>
+            </div>
+            <div class="playerSongBtns">
+                <div class="playerControls">
+                    <button id="repeatBtn"><i class="fa-solid fa-repeat"></i></button>
+                    <button id="backward"><i class="fa-solid fa-backward"></i></button>
+                    <button id="playPauseBtn" onclick="pausePlayCurrentSong()" name="songPlayButton"><i class="fa-solid fa-circle-play"></i></button>
+                    <button id="forward"><i class="fa-solid fa-forward"></i></button>
+                    <button id="miniPlayerLikeBtn"><i class="fa-regular fa-heart"></i></button>
+                    <button onclick="muteAudio(this)" onmouseover="openVolumeMenu()" name="songVolumeButton"><i class="fa-solid fa-volume-low"></i></button>
+                    <div class="miniVolumeWrapper" onmouseleave="closeVolumeMenu()">
+                        <input type="range" name="songVolume" id="songVolumeInput" value="30">
+                    </div>
+                </div>
+                <div class="miniSeek">
+                    <span id="currentSongTimeLeft">0:00</span>
+                    <div id="miniSeekBar"></div>
+                    <span id="currentSongTime">0:00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <aside class="categoryScreen">
+        <div class="screenScrollable" name="screenScrollable"  id="screenScrollableCat">
+            <div class="pageBar catPageBar" name="showUpPageBar">
+                <button type="button"><i class="fa-solid fa-angle-left"></i></button>
+                <h2 name="categoryName"></h2>
+            </div>
+            <div class="pageBar">
+                <button type="button" id="closeCategoryPage"><i style="color: #DCD6F7 !important;" class="fa-solid fa-angle-left"></i></button>
+                <h2></h2>
+            </div>
+            <div class="categoryAccentBubble"></div>
+            <div class="artistInfo">
+                <img loading="lazy" name="catBanner" src="" alt="categoryBanner" class="sideBanner catBanner">
+                <div class="artistControls">
+                    <div class="artistText">
+                        <h3 name="categoryName" id="catH3Title">?</h3>
+                    </div>
+                </div>
+            </div>
+            <section class="catWork">
+                <h2 class="catTitle center">Featured Songs</h2>
+                <ul class="categoryRecommendedSongs" name="Categories"></ul>
+                <h2 class="catTitle center">Featured Playlists</h2>
+                <ul class="categoryRecommendedPlaylists"></ul>
+            </section>
+        </div>
+    </aside>
+
+    <aside class="artistScreen">
+        <div class="screenScrollable" name="screenScrollable">
+            <div class="pageBar" name="showUpPageBar">
+                <button type="button"><i class="fa-solid fa-angle-left"></i></button>
+                <h2 name="artistName"></h2>
+            </div>
+            <div class="pageBar">
+                <button type="button" id="closeArtistPage"><i style="color: #DCD6F7 !important;" class="fa-solid fa-angle-left"></i></button>
+                <h2></h2>
+            </div>
+            <div class="artistInfo">
+                <img loading="lazy" name="artistBanner" src="" alt="artistBanner" class="sideBanner">
+                <div class="artistControls">
+                    <div class="artistText">
+                        <h3 name="artistName" id="test"></h3>
+                        <h5><span name="artistFollowers" id="artistFollowers">0</span>&nbsp;Followers</h5>
+                    </div>
+                    <div class="artistBtns">
+                        <button id="followArtistBtn"><i class="fa-solid fa-plus"></i> Follow</button>
+                        <button><i class="fa-solid fa-play"></i> Play</button>
+                    </div>
+                </div>
+            </div>
+            <section class="artistWork" name="Artists">
+                <article class="latestRelease" name="Artists"></article>
+                <h2 class="catTitleNoMargin">Top tracks this month</h2>
+                <ul class="artistTopTracks" name="Top Tracks"></ul>
+                <h2 class="catTitleNoMargin">About <span name="artistName"></span></h2>
+                <div id="aboutTheArtist">
+                    <img id="artistAboutBanner" src="" alt="aboutArtistImage">
+                    <p>Soon to be implemented... Stay tuned!</p>
+                </div>
+                <h2 class="catTitleNoMargin">Appears On</h2>
+                <ul class="artistAppearsOn"></ul>
+            </section>
+        </div>
+    </aside>
+
+    <aside class="playlistScreen">
+        <div class="screenScrollable" name="screenScrollable">
+            <div class="pageBar" name="showUpPageBar">
+                <button type="button"><i class="fa-solid fa-angle-left"></i></button>
+                <h2 name="playlistName" id="playlistChecker"></h2>
+            </div>
+            <div class="pageBar">
+                <button type="button" id="closePlaylistPage"><i style="color: #DCD6F7 !important;" class="fa-solid fa-angle-left"></i></button>
+                <h2></h2>
+            </div>
+            <div class="artistInfo">
+                <img loading="lazy" name="playlistBanner" src="" alt="playlistBanner" class="sideBanner">
+                <div class="artistControls">
+                    <div class="artistText">
+                        <h3 name="playlistName" id="testVar"></h3>
+                        <h5 id="playlistLikesH5"><span name="playlistLikes" id="playlistLikes">0</span>&nbsp;Likes</h5>
+                    </div>
+                    <div class="artistBtns">
+                        <button id="likePlaylist"><i class="fa-regular fa-heart"></i></button>
+                        <button id="playPlaylistBtn" onclick="clickEffect(); playPlaylist();"><i class="fa-solid fa-play"></i> Play</button>
+                    </div>
+                    <div class="darken"></div>
+                </div>
+            </div>
+            <section class="playlistWork">
+                <ul class="playlistSongsList" name="Playlist"></ul>
+            </section>
+        </div>
+    </aside>
+
+    <aside class="makePlaylistScreen">
+        <div class="screenScrollable">
+            <div class="pageBar">
+                <button type="button" onclick="CloseMakePlaylistScreen()"><i class="fa-solid fa-angle-left"></i></button>
+                <h2>Make a Playlist</h2>
+            </div>
+            <form class="makePlaylistForm" onsubmit="event.preventDefault()">
+                <div class="formImageInput">
+                    <div id="imageUploadView" onclick="document.getElementById('imageInput').click()"><i class="fa-solid fa-arrow-up-from-bracket"></i></div>
+                    <input type="file" name="imageInput" id="imageInput">
+                </div>
+                <h2 class="currentMakePlaylistName">My Playlist</h2>
+                <input onkeyup="changeMakePlaylistName(this.value)" onkeydown="changeMakePlaylistName(this.value)" type="text" name="nameInput" id="nameInput" placeholder="Enter the name">
+                <input type="submit" value="Finish" id="submitMakePlaylist" onclick="SubmitAPlaylist()">
+            </form>
+        </div>
+    </aside>
+
+    <aside class="loginScreen">
+        <div class="pageBar">
+            <button type="button" onclick="closeLoginScreen()"><i class="fa-solid fa-angle-left"></i></button>
+            <h2 name="regLogTitle">Register</h2>
+        </div>
+        <div class="screenScrollable">
+            <form class="loginForm">
+                <h2 name="regLogTitle">Register</h2>
+    
+                <label for="username">Username</label>
+                <input type="text" id="username" aria-describedby="usernameHelp" autocomplete="username" required>
+                <label for="email" class="emailLabel">Email</label>
+                <input type="email" id="email" aria-describedby="emailHelp" autocomplete="email" required>
+                <label for="password">Password</label>
+                <input type="password" id="password" aria-describedby="passwordHelp" autocomplete="current-password" required>
+    
+                <h5 id="alreadtAcc">Already have an account? <span class="highlightSpan" id="changeLoginScreenBtn" onclick="RegToLog()">Log in!</span></h5>
+    
+                <div class="buttonField">
+                    <button type="button" id="registerBtn">Register</button>
+                    <button type="button" id="loginBtn" style="display: none;">Login</button>
+                    <button type="button" id="regGoogleBtn"><i class="fa-brands fa-google"></i>&nbsp;Register with Google</button>
+                </div>
+            </form>
+            <div class="loggedInScreen">
+                <section class="logOutSection">
+                    <div class="accountInfo">
+                        <img loading="lazy" name="accountPhoto" src="images/noUserImg.png" alt="userBanner">
+                        <div class="accountText">
+                            <h2 name="accountName">Guest</h2>
+                            <h5 name="accountEmail">youarenotsuppsedtoseethis</h5>
+                        </div>
+                    </div>
+                    <button type="button" id="logoutBtn">Log Out</button>
+                </section>
+                <hr>
+                <section class="toggleSection">
+                    <div class="toggleText">
+                        <h2>Theme</h2>
+                        <h5>Sets the app theme; Auto sets the theme of your device</h5>
+                    </div>
+                    <select name="appTheme" id="appThemeSelect" onchange="SelectAppTheme()">
+                        <option value="dark">Dark</option>
+                        <option value="light">Light</option>
+                        <option value="auto" selected>Auto</option>
+                    </select>
+                </section>
+                <hr>
+                <section class="toggleSection">
+                    <div class="toggleText">
+                        <h2>Data Saver</h2>
+                        <h5>Sets the audio quality to low and turns off image previews for songs</h5>
+                    </div>
+                    <input id="dataSaverToggle" type="checkbox" name="dataSaverToggle" placeholder="Data Saver Toggle">
+                </section>
+                <hr>
+                <section class="toggleSection">
+                    <div class="toggleText">
+                        <h2>Colorless Player</h2>
+                        <h5>Sets the player background to a single color, instead of the dynamic backdrop</h5>
+                    </div>
+                    <input id="monopToggle" type="checkbox" name="monopToggle" placeholder="Monochrome-Player Toggle">
+                </section>
+                <hr>
+                <section class="toggleSection">
+                    <div class="toggleText">
+                        <h2>Reduce Motion</h2>
+                        <h5>This setting minimizes visual motion effects and transitions for a smoother and less distracting user experience.</h5>
+                    </div>
+                    <input id="redanimToggle" type="checkbox" name="redanimToggle" placeholder="Reduce Animations Toggle">
+                </section>
+                <hr>
+                <section class="toggleSection">
+                    <div class="toggleText">
+                        <h2>Performance Mode</h2>
+                        <h5>Performance mode turns off the glassmorphic effects and the players dynamic background.</h5>
+                    </div>
+                    <input id="pmToggle" type="checkbox" name="pmToggle" placeholder="Performance Mode Toggle">
+                </section>
+                <hr>
+                <section class="versionSection">
+                    <h2>VERSION</h2>
+                    <h5>Copyright © 2023  |  <span style="color: var(--accentColor);">Crimson Music for Desktop®</span> Version - 0.1.4  |  All Rights Reserved</h5>
+                </section>
+            </div>
+        </div>
+    </aside>
+
+    <aside class="bugReportScreen">
+        <div class="pageBar">
+            <button type="button" onclick="closeBugScreen()"><i class="fa-solid fa-angle-left"></i></button>
+            <h2>Report a Bug</h2>
+        </div>
+        <div class="screenScrollable fcenter">
+            <!-- <form class="bugReportForm">
+                
+            </form> -->
+
+            <span class="highlightSpan2">Coming soon</span>
+        </div>
+    </aside>
+
+    <div id="popupWrapper">
+        <div class="popupScreen">
+            <div class="draggableBarTop">
+                <div></div>
+            </div>
+            <div class="popupInfo">
+                <div class="popupText">
+                    <h2 name="popupSongTitle">SongTitle</h2>
+                    <h3 name="popupArtist">SongArtist</h3>
+                </div>
+            </div>
+            <ul class="songPopupBody">
+                <li class="popupItem" onclick="clickEffect(this)" id="likeSongBtn">
+                    <i class="fa-regular fa-heart"></i>
+                    <h5>Add to favorites</h5>
+                </li>
+                <li class="popupItem" onclick="clickEffect(this)" id="seeMoreFromBtn">
+                    <i class="fa-regular fa-user"></i>
+                    <h5>See more from <span name="popupArtist">SongArtist</span></h5>
+                </li>
+                <li class="popupItem" id="addToPlBtn">
+                    <div class="playlistAddPopup">
+                        <i class="fa-regular fa-plus"></i>
+                        <h5>Add to playlist</h5>
+                    </div>
+                    <button id="closePopupPlBtn">Done</button>
+                    <ul class="popupMyPlaylists"></ul>
+                </li>
+            </ul>
+            <ul class="playlistPopupBody">
+                <li class="popupItem" onclick="clickEffect(this)">
+                    <i class="fa-solid fa-trash-can"></i>
+                    <h5>Delete playlist</h5>
+                </li>
+                <li class="popupItem" onclick="clickEffect(this)">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    <h5>Edit playlist</h5>
+                </li>
+            </ul>
+        </div>
+        <div class="closePopup" onclick="closePopup()"></div>
+    </div>
+
+    <div class="loginPopup">
+        <div>
+            <h5>To access this feature, you'll have to create an account!</h5>
+            <i class="fa-regular fa-face-dizzy"></i>
+        </div>
+    </div>
+
+    <nav class="navBig">
+        <span class="navPullPoint"><span></span></span>
+        <div>
+            <button class="activeScreen" type="button" onclick="setScreen('Home', this, 'homeScreen'); closeArtistPage();"><i class="fa-solid fa-house"></i><p>Home</p></button>
+            <button type="button" onclick="setScreen('Search', this, 'searchScreen'); closeArtistPage();"><i class="fa-solid fa-magnifying-glass"></i><p>Search</p></button>
+            <button type="button" onclick="setScreen('Playlists', this, 'yoursScreen'); closeArtistPage();"><i class="fa-solid fa-border-all"></i><p>Library</p></button>
+            <button class="mainSettingsBtn" type="button" onclick="openLoginScreen();"><i class="bi bi-gear"></i><p>Settings</p></button>
+        </div>
+        <div class="usersPlaylistsSide">
+            <button onclick="openLikedSongs()"><img src="images/favorites.jpg" alt="Favorites"><p>Favorites</p></button>
+            <button class="addPlBtnNav" onclick="MakeAPlaylist()"><i class="fa-solid fa-plus"></i></button>
+        </div>
+        <div>
+            <button class="sideSettingsBtn" type="button" onclick="openLoginScreen();"><i class="bi bi-gear"></i><p>Settings</p></button>
+        </div>
+    </nav>
+
+    <div style="display: none;" class="loaderWrapper">
+        <div class="loader"></div>
+    </div>
+
+    <div class="noStorageMessage" style="display: none;">
+        <div><span class="highlightSpan2">Hi!</span> If you are seeing this message, that means Firebase storage has run out for today. We know it's not ideal, but to keep everything free, Firebase has a limit for data usage that will reset tomorrow. Thank you for using <span class="highlightSpan2">Crimson!</span></div>
+    </div>
+
+    </div>
+
+    <script type="module">
+        import { openArtistPage,closeArtistPage,closePlaylistPage,openPlaylistPage,openCategoryPage,playRandomSongForTheVault,closeCategoryPage,MakeAPlaylist,openMyPlaylistPage,SubmitAPlaylist,openLikedSongs,addSongToLiked,seeIfSongIsLiked,reloadLikedSongs,getArtistId,LoadUserPlaylistsPopup,addSongToThisPlaylist,turnLyrics,doesSongHaveLyrics,openArtistPageByName,UserSignedIn } from './js/indexController.js';
+        window.openArtistPage = openArtistPage;
+        window.closeArtistPage = closeArtistPage;
+        window.closePlaylistPage = closePlaylistPage;
+        window.openPlaylistPage = openPlaylistPage;
+        window.openCategoryPage = openCategoryPage;
+        window.closeCategoryPage = closeCategoryPage;
+        window.playRandomSongForTheVault = playRandomSongForTheVault;
+        window.MakeAPlaylist = MakeAPlaylist;
+        window.openMyPlaylistPage = openMyPlaylistPage;
+        window.SubmitAPlaylist = SubmitAPlaylist;
+        window.openLikedSongs = openLikedSongs;
+        window.addSongToLiked = addSongToLiked;
+        window.seeIfSongIsLiked = seeIfSongIsLiked;
+        window.reloadLikedSongs = reloadLikedSongs;
+        window.getArtistId = getArtistId;
+        window.LoadUserPlaylistsPopup = LoadUserPlaylistsPopup;
+        window.addSongToThisPlaylist = addSongToThisPlaylist;
+        window.turnLyrics = turnLyrics;
+        window.doesSongHaveLyrics = doesSongHaveLyrics;
+        window.openArtistPageByName = openArtistPageByName;
+        window.UserSignedIn = UserSignedIn;
+    </script>
+
+    <audio id="currentSong" volume="30"></audio>
+</body>
+</html>
