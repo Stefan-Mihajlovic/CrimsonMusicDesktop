@@ -1349,6 +1349,16 @@ function DBMakePl(){
                     let setTheme = snapshot.val().AppTheme;
                     let setLikedPlaylists = snapshot.val().LikedPlaylists;
                     let setFollowedArtists = snapshot.val().FollowedArtists;
+
+                    if(setFollowedArtists == undefined){
+                        setFollowedArtists = "";
+                    }
+                    if(setLikedSongs == undefined){
+                        setLikedSongs = "";
+                    }
+                    if(setLikedPlaylists == undefined){
+                        setLikedPlaylists = "";
+                    }
         
                     let currentMakePlaylistName = document.getElementsByClassName("currentMakePlaylistName")[0];
         
@@ -1394,11 +1404,15 @@ function LoadUserPlaylists(){
             let usersPlaylists = (snapshot.val().Playlists).split('{');
             numberOfPlaylists = usersPlaylists.length - 1;
 
-            for (let i = numberOfPlaylists-1; i >= 0; i--) {
+            if(numberOfPlaylists < 1){
+                yourHeaderPlaylists.innerHTML += `<button class="addPlBtnNav" onclick="MakeAPlaylist()"><i class="fa-solid fa-plus"></i></button>`;
+            }
+
+            for (let i = numberOfPlaylists; i > 0; i--) {
 
                 let currentPi = `<button onclick="openMyPlaylistPage(`+ usersPlaylists[i].split('}')[0] +`,'`+ usersPlaylists[i].split('}')[1] +`','`+ usersPlaylists[i].split('}')[2] +`','`+ 0 +`','`+ usersPlaylists[i].split('}')[3] +`');"><img src="${usersPlaylists[i].split('}')[2]}" alt="${usersPlaylists[i].split('}')[1]} Playlist"><p>${usersPlaylists[i].split('}')[1]}</p></button>`;
                 yourHeaderPlaylists.innerHTML += currentPi;
-                if(i == 0){
+                if(i == 1){
                     yourHeaderPlaylists.innerHTML += `<button class="addPlBtnNav" onclick="MakeAPlaylist()"><i class="fa-solid fa-plus"></i></button>`;
                 }
 
@@ -1897,7 +1911,7 @@ export function LoadUserPlaylistsPopup(songId){
                 let usersPlaylists = (snapshot.val().Playlists).split('{');
                 numberOfPlaylists = usersPlaylists.length - 1;
     
-                for (let i = numberOfPlaylists-1; i >= 0; i--) {
+                for (let i = numberOfPlaylists; i > 0; i--) {
                     if(usersPlaylists[i].split('}')[3]?.includes(',' + songId) || usersPlaylists[i].split('}')[3]?.includes(songId + ',')){
                         let currentLi =  `<li class="songItem" id="`+ usersPlaylists[i].split('}')[0] +`">
                             <div class="songInfo">

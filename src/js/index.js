@@ -1376,9 +1376,18 @@ function noStorage(){
 // Drag NavBar
 
 const navPullPoint = document.querySelector('.navPullPoint');
+const navPullBtn = document.getElementById('navPullBtn');
 let isPullingNav = false;
 let pullStartPoint;
 let navBarMode = 'small';
+
+navPullBtn.addEventListener('click', () => {
+    if(navBarMode == 'small'){
+        openBigNav();
+    }else{
+        closeBigNav();
+    }
+})
 
 navPullPoint.addEventListener('mousedown', (e) => {
     // console.log("start: " + e.clientX);
@@ -1393,44 +1402,12 @@ document.addEventListener("mousemove", (e) => {
         let diff = e.clientX - pullStartPoint;
         if(navBarMode == "small"){
             if(diff > 150){
-                // console.log("Bar ready");
-                navPullPoint.parentElement.classList.add('navBigBig');
-                let mainies = document.getElementsByTagName('main');
-                for (let i = 0; i < mainies.length; i++) {
-                    mainies[i].classList.add('navBigMain');
-                }
-    
-                let asides = document.getElementsByTagName('aside');
-                for (let i = 0; i < asides.length; i++) {
-                    asides[i].classList.add('sidePageNavBig');
-                }
-    
-                document.querySelector('.player').classList.add('navBigPlayer');
-
-                navBarMode = "big";
-
-                isPullingNav = false;
+                openBigNav();
             }
         }else{
             diff = Math.abs(diff);
             if(diff > 90){
-                // console.log("Bar ready");
-                navPullPoint.parentElement.classList.remove('navBigBig');
-                let mainies = document.getElementsByTagName('main');
-                for (let i = 0; i < mainies.length; i++) {
-                    mainies[i].classList.remove('navBigMain');
-                }
-    
-                let asides = document.getElementsByTagName('aside');
-                for (let i = 0; i < asides.length; i++) {
-                    asides[i].classList.remove('sidePageNavBig');
-                }
-    
-                document.querySelector('.player').classList.remove('navBigPlayer');
-
-                navBarMode = "small";
-
-                isPullingNav = false;
+                closeBigNav();
             }
         }
 
@@ -1441,3 +1418,47 @@ document.addEventListener("mousemove", (e) => {
 document.addEventListener("mouseup", (e) => {
     isPullingNav = false;
 })
+
+function openBigNav(){
+    // console.log("Bar ready");
+    navPullPoint.parentElement.classList.add('navBigBig');
+    let mainies = document.getElementsByTagName('main');
+    for (let i = 0; i < mainies.length; i++) {
+        mainies[i].classList.add('navBigMain');
+    }
+
+    let asides = document.getElementsByTagName('aside');
+    for (let i = 0; i < asides.length; i++) {
+        asides[i].classList.add('sidePageNavBig');
+    }
+
+    document.querySelector('.player').classList.add('navBigPlayer');
+
+    navPullBtn.classList.add('rotateY180');
+
+    navBarMode = "big";
+
+    isPullingNav = false;
+}
+
+function closeBigNav(){
+    // console.log("Bar ready");
+    navPullPoint.parentElement.classList.remove('navBigBig');
+    let mainies = document.getElementsByTagName('main');
+    for (let i = 0; i < mainies.length; i++) {
+        mainies[i].classList.remove('navBigMain');
+    }
+
+    let asides = document.getElementsByTagName('aside');
+    for (let i = 0; i < asides.length; i++) {
+        asides[i].classList.remove('sidePageNavBig');
+    }
+
+    document.querySelector('.player').classList.remove('navBigPlayer');
+
+    navPullBtn.classList.remove('rotateY180');
+
+    navBarMode = "small";
+
+    isPullingNav = false;
+}

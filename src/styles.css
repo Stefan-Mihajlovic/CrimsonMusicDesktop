@@ -181,7 +181,7 @@ li{
 }
 
 img{
-    background-color: var(--offWhiteDark);
+    background-color: black;
 }
 
 .fcenter{
@@ -2578,15 +2578,45 @@ nav{
 }
 
 .navBig div{
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     border: 1px solid var(--playerColor);
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: var(--footerBg);
     border-radius: 15px;
-    overflow: hidden;
     gap: 5px;
     transition: none;
+}
+
+#navPullBtn{
+    position: absolute;
+    bottom: -16px;
+    right: -22px;
+    background-color: var(--mainColor);
+    border: 1px solid var(--playerColor);
+    width: 20px !important;
+    height: 20px !important;
+    padding: 0px;
+    border-radius: 50% !important;
+    transition: all .15s ease-in-out;
+}
+
+#navPullBtn:hover{
+    border: 1px solid rgba(145, 126, 214, 0.75);
+}
+
+#navPullBtn i{
+    font-size: 15px;
+    color: var(--offWhiteDark);
+}
+
+#navPullBtn:hover i{
+    color: rgba(145, 126, 214, 0.75);
+}
+
+.rotateY180 i{
+    transform: rotate(180deg);
 }
 
 .navPullPoint{
@@ -2598,6 +2628,7 @@ nav{
     cursor: e-resize;
     display: grid;
     place-items: center;
+    pointer-events: none;
 }
 
 .navPullPoint span{
@@ -2605,6 +2636,7 @@ nav{
     width: 1px;
     background-color: transparent;
     opacity: 0.5;
+    transition: .15s ease-in-out .1s;
 }
 
 .navPullPoint:hover span{
@@ -2926,6 +2958,9 @@ nav button i{
         transition: all 0.3s ease-out !important;
         border-radius: 6px !important;
         aspect-ratio: 1.5 / 1;
+    }
+    .navPullPoint{
+        pointer-events: all;
     }
     .navBig div button p{
         display: none;
