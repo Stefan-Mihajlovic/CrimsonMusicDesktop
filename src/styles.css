@@ -2600,6 +2600,7 @@ nav{
     padding: 0px;
     border-radius: 50% !important;
     transition: all .15s ease-in-out;
+    display: none;
 }
 
 #navPullBtn:hover{
@@ -2609,10 +2610,12 @@ nav{
 #navPullBtn i{
     font-size: 15px;
     color: var(--offWhiteDark);
+    opacity: 0.5;
 }
 
 #navPullBtn:hover i{
     color: rgba(145, 126, 214, 0.75);
+    opacity: 1;
 }
 
 .rotateY180 i{
@@ -2961,6 +2964,9 @@ nav button i{
     }
     .navPullPoint{
         pointer-events: all;
+    }
+    #navPullBtn{
+        display: block;
     }
     .navBig div button p{
         display: none;
